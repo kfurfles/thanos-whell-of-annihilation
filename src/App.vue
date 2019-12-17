@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+      <TFrame :video="endVideo" ref="video"/>
       <div class="thanos">
           <TWhell class="whell" ref="wheel" :heroesData="availableHeros" @onSelected="selectedHero" />
           <img class="manopla" src="./assets/manopla.png" alt="" srcset="">
@@ -19,24 +20,23 @@ import Swal from 'sweetalert2'
 import TWhell from './components/TWhell.vue'
 import TButton from './components/TButton.vue'
 import THeroesContainer from './components/THeroesContainer.vue'
+import TFrame from './components/TFrame.vue'
 
 export default {
     name: 'app',
     components: {
         TWhell,
         THeroesContainer,
-        TButton
+        TButton,
+        TFrame
     },
     data: () => ({
+        endVideo: '',
         heroes: [
-            // { name: 'B. Panter', image: 'black-panter.png', active: true },
-            { name: 'C. America', image: 'captain-america.jpg', active: true },
-            // { name: 'Dr. Strange', image: 'doctor-strange.png', active: true },
-            // { name: 'Groot', image: 'groot.png', active: true },
-            { name: 'Hulk', image: 'hulk.jpg', active: true },
-            { name: 'Iron Man', image: 'iron-man.jpg', active: true },
-            // { name: 'Spider Man', image: 'rocket.png', active: true },
-            { name: 'Thor', image: 'thor.jpg', active: true }
+            { name: 'C. America', image: 'captain-america.jpg', active: true, movie: 'https://www.youtube.com/watch?v=eKegchGOcXc' },
+            { name: 'Hulk', image: 'hulk.jpg', active: true, movie: 'https://www.youtube-nocookie.com/embed/kO5WPKT0690' },
+            { name: 'Iron Man', image: 'iron-man.jpg', active: true, movie: 'https://www.youtube-nocookie.com/embed/GUMGjwgAA9M' },
+            { name: 'Thor', image: 'thor.jpg', active: true, movie: 'https://www.youtube-nocookie.com/embed/X6fWfoax5bU' }
         ]
     }),
     methods:{
@@ -49,7 +49,9 @@ export default {
       },
       selectedHero(hero){
         setTimeout(() =>{
-          this.$refs.button.integrate()
+          if(this.availableHeros.length > 1){
+            this.$refs.button.integrate()
+          }
         },5000)
         this.heroes = this.heroes
         const idx = this.heroes.findIndex(h => h.name === hero)
@@ -67,9 +69,21 @@ export default {
           imageAlt: 'Custom image',
           showCancelButton: false,
           showConfirmButton: false,
-          timer: 2000
+          timer: 2000,
+          allowOutsideClick: false
         })
       }
+    },
+    watch:{
+      availableHeros(heroes){
+        if (heroes.length === 1) {
+          setTimeout(() =>{
+            this.endVideo = heroes[0].movie
+            this.$refs.video.open()
+          },8000)
+        }
+      }
+
     },
     computed:{
       availableHeros(){
