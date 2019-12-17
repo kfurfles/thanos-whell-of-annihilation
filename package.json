@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@vue/composition-api": "^0.3.2",
+    "animejs": "^3.1.0",
+    "chance": "^1.1.4",
     "core-js": "^3.3.2",
+    "html2canvas": "^1.0.0-rc.5",
+    "sweetalert2": "^9.5.3",
     "vue": "^2.6.10"
   },
   "devDependencies": {
